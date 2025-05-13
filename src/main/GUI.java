@@ -5,6 +5,13 @@
 package main;
 
 import java.awt.HeadlessException;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,9 +37,14 @@ public class GUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
+        mnuPrgMentes = new javax.swing.JCheckBoxMenuItem();
         mnuPrgKilepes = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
 
@@ -43,11 +55,29 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox1.setText("Hírlevél");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Szf", "Irü", "Divat" }));
+        jComboBox1.setToolTipText("");
+
+        jLabel2.setText("Név:");
+        jLabel2.setPreferredSize(new java.awt.Dimension(53, 16));
+
+        jLabel3.setText("Szak:");
+        jLabel3.setPreferredSize(new java.awt.Dimension(53, 16));
+
+        jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
         jMenu1.setText("Program");
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("Mentés...");
-        jMenu1.add(jCheckBoxMenuItem1);
+        mnuPrgMentes.setSelected(true);
+        mnuPrgMentes.setText("Mentés...");
+        mnuPrgMentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuPrgMentesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuPrgMentes);
 
         mnuPrgKilepes.setSelected(true);
         mnuPrgKilepes.setText("Kilépés...");
@@ -60,6 +90,11 @@ public class GUI extends javax.swing.JFrame {
 
         jCheckBoxMenuItem3.setSelected(true);
         jCheckBoxMenuItem3.setText("Betöltés...");
+        jCheckBoxMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jCheckBoxMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -70,11 +105,38 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 239, Short.MAX_VALUE))
+                            .addComponent(jTextField2))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jCheckBox1)
+                .addGap(193, 193, 193))
         );
 
         pack();
@@ -91,6 +153,70 @@ public class GUI extends javax.swing.JFrame {
         Kilepes();
     }//GEN-LAST:event_formWindowClosing
 
+    private void mnuPrgMentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPrgMentesActionPerformed
+        JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+        int gomb = jfc.showSaveDialog(rootPane);
+        
+        if (gomb == JFileChooser.APPROVE_OPTION) {
+            File kivalasztottfajl = jfc.getSelectedFile();
+            String fajlElerese = kivalasztottfajl.getAbsolutePath();
+            Path path = Path.of(fajlElerese);
+            try {
+                Files.writeString(path, tartalom());
+            } catch (IOException ex) {
+                String hiba = "IO Hiba!";
+                JOptionPane.showMessageDialog(null, hiba);
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+
+        /*Path path = Path.of("kimenet.txt");
+        byte[] bytes = jTextField1.getText().getBytes();
+        
+        try {
+            Files.write(path, bytes);
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }//GEN-LAST:event_mnuPrgMentesActionPerformed
+
+    private void jCheckBoxMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
+        JFileChooser jfc = new JFileChooser(System.getProperty("user.dir"));
+        //String sorok = Files.readString(path);
+        
+        int gomb = jfc.showSaveDialog(this);
+        
+        if (gomb == JFileChooser.APPROVE_OPTION) {
+            File kivalasztottfajl = jfc.getSelectedFile();
+            try {
+                 String sorok = Files.readString(kivalasztottfajl.toPath());
+                 System.out.println("A beolvasott file tartalma: ");
+                 System.out.println(sorok);
+                
+            } catch (IOException ex) {
+                String hiba = "IO Hiba!";
+                JOptionPane.showMessageDialog(null, hiba);
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        
+        
+    }//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
+
+    private String tartalom(){
+        int szakIndex = jComboBox1.getSelectedIndex();
+        
+        String nev = jTextField2.getText();
+        String szak = jComboBox1.getItemAt(szakIndex);
+        boolean hirlevel = jCheckBox1.isSelected();
+
+        return "\nNév: "+ nev+
+               "\nSzak: "+ szak+
+               "\nHírlevél: " + (hirlevel?"Kér hírlevelet":"Nem kér hírlevelet");
+    }
+    
     private void Kilepes() throws HeadlessException {
         int optTip = JOptionPane.YES_NO_OPTION;
         String msgTip = "Biztos kilép?";
@@ -139,10 +265,15 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JCheckBoxMenuItem mnuPrgKilepes;
+    private javax.swing.JCheckBoxMenuItem mnuPrgMentes;
     // End of variables declaration//GEN-END:variables
 }
