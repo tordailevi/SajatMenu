@@ -4,6 +4,9 @@
  */
 package main;
 
+import java.awt.HeadlessException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author TordaiLeventeBarnabá
@@ -15,6 +18,7 @@ public class GUI extends javax.swing.JFrame {
      */
     public GUI() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -29,10 +33,15 @@ public class GUI extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
+        mnuPrgKilepes = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jMenu1.setText("Program");
 
@@ -40,9 +49,14 @@ public class GUI extends javax.swing.JFrame {
         jCheckBoxMenuItem1.setText("Mentés...");
         jMenu1.add(jCheckBoxMenuItem1);
 
-        jCheckBoxMenuItem2.setSelected(true);
-        jCheckBoxMenuItem2.setText("Kilépés...");
-        jMenu1.add(jCheckBoxMenuItem2);
+        mnuPrgKilepes.setSelected(true);
+        mnuPrgKilepes.setText("Kilépés...");
+        mnuPrgKilepes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuPrgKilepesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuPrgKilepes);
 
         jCheckBoxMenuItem3.setSelected(true);
         jCheckBoxMenuItem3.setText("Betöltés...");
@@ -65,6 +79,29 @@ public class GUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void mnuPrgKilepesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuPrgKilepesActionPerformed
+        Kilepes();
+            
+        
+        
+    }//GEN-LAST:event_mnuPrgKilepesActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        Kilepes();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void Kilepes() throws HeadlessException {
+        int optTip = JOptionPane.YES_NO_OPTION;
+        String msgTip = "Biztos kilép?";
+        String cimTip = "Kilépés";
+        
+        int valasz = JOptionPane.showConfirmDialog(null, msgTip, cimTip, optTip);
+        
+        if (valasz == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -103,9 +140,9 @@ public class GUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JCheckBoxMenuItem mnuPrgKilepes;
     // End of variables declaration//GEN-END:variables
 }
